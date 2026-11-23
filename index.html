@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İktisada Giriş: Çalışma Sitesi</title>
+<style>
+:root{--bg:#f3f6f8;--surface:#fff;--ink:#14233a;--muted:#5a6b80;--line:#d5dee6;--accent:#1f6f8b;--accent-ink:#fff;--mark:#f5dd8a;--ok:#1d7a4d;--bad:#b3362c;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1824;--surface:#172536;--ink:#e6edf4;--muted:#9fb0c2;--line:#2a3b50;--accent:#6bbcd6;--accent-ink:#0f1824;--mark:#6b5a1b;--ok:#6fd19b;--bad:#ff8b7f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1824;--surface:#172536;--ink:#e6edf4;--muted:#9fb0c2;--line:#2a3b50;--accent:#6bbcd6;--accent-ink:#0f1824;--mark:#6b5a1b;--ok:#6fd19b;--bad:#ff8b7f;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Georgia,"Iowan Old Style",serif;line-height:1.2;margin:0}
+header{max-width:860px;margin:0 auto;padding:2.5rem 1.25rem 1rem}
+header h1{font-size:clamp(1.9rem,5vw,2.8rem)}
+header p{color:var(--muted);margin:.5rem 0 0;max-width:60ch}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .in{max-width:860px;margin:0 auto;padding:.6rem 1.25rem;display:flex;gap:.4rem;align-items:center}
+nav button{font:inherit;font-size:.95rem;padding:.4rem .9rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+nav .sp{flex:1}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:1.25rem 1.25rem 4rem}
+section[hidden]{display:none}
+.weeks{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
+.weeks button{font:inherit;font-size:.9rem;padding:.35rem .8rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;cursor:pointer}
+.weeks button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
+.week h2{font-size:1.6rem;margin-bottom:.75rem}
+.week ul{padding-left:1.2rem;margin:0}
+.week li{margin:.45rem 0;max-width:68ch}
+b.k{background:var(--mark);padding:0 .2em;border-radius:3px;font-weight:600}
+.tbl{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--surface)}
+th,td{border:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+th{background:var(--bg)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.5rem;min-height:12rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100%;font:inherit;color:inherit;cursor:pointer}
+.card .lbl{color:var(--muted);font-size:.85rem;margin-bottom:.5rem}
+.card .txt{font-family:Georgia,serif;font-size:1.4rem;max-width:34ch}
+.card.back .txt{font-family:inherit;font-size:1.1rem}
+.row{display:flex;gap:.5rem;align-items:center;justify-content:space-between;margin-top:.9rem}
+.btn{font:inherit;padding:.5rem 1rem;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.muted{color:var(--muted);font-size:.92rem}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.25rem}
+.q p{font-size:1.15rem;margin:.2rem 0 1rem}
+.q .ans{display:flex;gap:.6rem}
+.fb{margin-top:1rem;min-height:3rem}
+.fb.ok strong{color:var(--ok)}.fb.no strong{color:var(--bad)}
+.sum{font-size:1.2rem;font-family:Georgia,serif}
+h3{margin:1.4rem 0 .4rem;font-size:1.15rem}
+@media (prefers-reduced-motion:no-preference){.card{transition:background .15s}}
+</style>
+</head>
+<body>
+<header>
+  <h1>İktisada Giriş</h1>
+  <p>Hafta 1-8 notlarından çalışma sitesi: haftalık özet, formüller, bilgi kartları ve doğru/yanlış testi.</p>
+</header>
+<nav><div class="in" role="tablist" aria-label="Bölümler">
+  <button role="tab" aria-selected="true" data-tab="ozet">Özet</button>
+  <button role="tab" aria-selected="false" data-tab="formul">Formüller</button>
+  <button role="tab" aria-selected="false" data-tab="kart">Kartlar</button>
+  <button role="tab" aria-selected="false" data-tab="test">Test</button>
+  <span class="sp"></span>
+  <button id="theme" aria-label="Temayı değiştir">Tema</button>
+</div></nav>
+<main>
+<section id="ozet">
+  <div class="weeks" id="weeks"></div>
+  <article class="week" id="week" aria-live="polite"></article>
+</section>
+
+<section id="formul" hidden>
+  <h2>Formül kartı</h2>
+  <div class="tbl"><table>
+  <tr><th>Konu</th><th>Formül</th></tr>
+  <tr><td>Verimlilik</td><td>Üretim / Girdi</td></tr>
+  <tr><td>Talep fonksiyonu</td><td>QD = f(Pa, Pt, Pi, M, N, B, Z)</td></tr>
+  <tr><td>Arz fonksiyonu</td><td>QS = f(Pa, Pb, Pg, T, Tx, Sb, N, B)</td></tr>
+  <tr><td>Piyasa dengesi</td><td>QD = QS</td></tr>
+  <tr><td>Kardinal tüketici dengesi</td><td>MU<sub>A</sub>/P<sub>A</sub> = MU<sub>B</sub>/P<sub>B</sub></td></tr>
+  <tr><td>Bütçe doğrusu uçları</td><td>G/Fa ve G/Fb</td></tr>
+  <tr><td>Marjinal ürün</td><td>MP<sub>L</sub> = ∂F/∂L</td></tr>
+  <tr><td>Ortalama ürün</td><td>AP<sub>L</sub> = Q / L</td></tr>
+  <tr><td>Eş maliyet doğrusu</td><td>r·K + w·L = TC</td></tr>
+  <tr><td>GSMH</td><td>GSYİH + yurt dışı vatandaş geliri − yabancı geliri</td></tr>
+  <tr><td>SMH</td><td>GSMH − amortisman</td></tr>
+  <tr><td>NYİH</td><td>GSYİH − yıpranma</td></tr>
+  <tr><td>Gelir yöntemi</td><td>MG = w + i + r + π</td></tr>
+  <tr><td>Harcama yöntemi</td><td>Y = C + I + G + (X − M)</td></tr>
+  <tr><td>Harcanabilir gelir</td><td>Kişisel gelir − doğrudan vergiler</td></tr>
+  </table></div>
+  <h3>Dengede kayma tablosu</h3>
+  <div class="tbl"><table>
+  <tr><th>Değişim</th><th>Fiyat</th><th>Miktar</th></tr>
+  <tr><td>Talep ↑</td><td>↑</td><td>↑</td></tr>
+  <tr><td>Talep ↓</td><td>↓</td><td>↓</td></tr>
+  <tr><td>Arz ↑</td><td>↓</td><td>↑</td></tr>
+  <tr><td>Arz ↓</td><td>↑</td><td>↓</td></tr>
+  <tr><td>Talep ↑ ve arz ↑ (eşit)</td><td>Aynı</td><td>↑</td></tr>
+  <tr><td>Talep ↓ ve arz ↑ (eşit)</td><td>↓</td><td>Aynı</td></tr>
+  <tr><td>Talep ↑ ve arz ↓ (eşit)</td><td>↑</td><td>Aynı</td></tr>
+  </table></div>
+</section>
+
+<section id="kart" hidden>
+  <h2>Bilgi kartları</h2>
+  <p class="muted">Karta dokun veya Boşluk tuşuna bas: cevabı gör.</p>
+  <button class="card" id="card" aria-live="polite"></button>
+  <div class="row">
+    <button class="btn ghost" id="prev">Önceki</button>
+    <span class="muted" id="cnt"></span>
+    <button class="btn" id="next">Sonraki</button>
+  </div>
+  <div class="row"><button class="btn ghost" id="shuf">Karıştır</button></div>
+</section>
+
+<section id="test" hidden>
+  <h2>Doğru / Yanlış testi</h2>
+  <div id="quiz"></div>
+</section>
+</main>
+
+<script>
+const WEEKS=[
+{t:"Hafta 1: Temel kavramlar",p:[
+"<b class='k'>İktisat</b>, kıt kaynakların sonsuz ihtiyaçlar için etkin dağıtımını inceleyen sosyal bilimdir (Oikonomia = ev idaresi).",
+"Mikro: <b class='k'>etkin</b> kullanım. Makro: <b class='k'>tam</b> kullanım. Büyüme ve kalkınma: kaynak miktarını artırma.",
+"Üretim faktörleri: emek (ücret), sermaye (faiz), doğal kaynak (rant), girişimci (kâr). Sermaye üretilmiş fiziksel varlıktır, para değildir.",
+"<b class='k'>Fırsat maliyeti</b>: bir seçim için vazgeçilen en değerli alternatif.",
+"Üç temel soru: ne, nasıl, kimler için üretilecek?",
+"İhtiyaçlar sonsuzdur, şiddetleri farklıdır, giderildikçe şiddetleri değişir, birbirinin yerine geçebilir. Maslow: birincil (fizyolojik) ve ikincil ihtiyaçlar.",
+"Mallar: ekonomik/serbest, dayanıklı/dayanıksız, tüketim/üretim, ikame/tamamlayıcı, normal/fakir mal.",
+"Fayda mutlak, değer nispidir. Üretim, faydayı şekil, yer, zaman ve mülkiyet olarak artırır.",
+"İş bölümü ve uzmanlaşma verimliliği artırır ve mübadeleyi geliştirir. Verimlilik = Üretim / Girdi.",
+"Sistemler: kapitalist (piyasa, özel mülkiyet), sosyalist (merkezi planlama), karma."]},
+{t:"Hafta 2: Talep",p:[
+"<b class='k'>Efektif talep</b>: satın alma isteği ve satın alma gücü birlikte.",
+"QD = f(Pa, Pt, Pi, M, N, B, Z). Talep eğrisi negatif eğimlidir.",
+"<b class='k'>Talep miktarı</b> değişir: yalnızca malın kendi fiyatı değişir, eğri üzerinde hareket olur.",
+"<b class='k'>Talep</b> değişir: fiyat dışı değişken değişir, eğri sağa (artış) veya sola (azalış) kayar.",
+"Gelir, tüketici sayısı, ikame fiyatı ↑ ise talep ↑. Tamamlayıcı mal fiyatı ↑ ise talep ↓."]},
+{t:"Hafta 3: Arz",p:[
+"Arz, farklı fiyatlarda satıcıların piyasaya getirdiği miktardır. Arz etmek yalnızca üretmek demek değildir.",
+"QS = f(Pa, Pb, Pg, T, Tx, Sb, N, B). Arz eğrisi pozitif eğimlidir.",
+"Kendi fiyatı, teknoloji, sübvansiyon, firma sayısı: arzla aynı yönlü. Girdi fiyatı, vergi, diğer malın (b) fiyatı: ters yönlü.",
+"Kârı artıran veya maliyeti azaltan her değişim arz eğrisini sağa kaydırır."]},
+{t:"Hafta 4: Piyasa dengesi ve devlet müdahalesi",p:[
+"Denge: <b class='k'>S = D</b>. Üstündeki fiyatta arz fazlası, altındaki fiyatta talep fazlası oluşur.",
+"Tüketici rantı = ödemeye razı olunan − ödenen fiyat (P(max) ile denge fiyatı arasındaki üçgen). Üretici rantı = satış − razı olunan fiyat.",
+"<b class='k'>Taban fiyat</b>: denge fiyatın üstünde, üreticiyi korur, arz fazlası doğar, devlet satın alır (çay, tütün, buğday; TMO).",
+"<b class='k'>Tavan fiyat (narh)</b>: denge fiyatın altında, tüketiciyi korur, talep fazlası doğar.",
+"Tavan fiyatta dağıtım: satıcı keyfi, önce gelen alır (kuyruk), vesika (en adil). Karaborsa riski vardır."]},
+{t:"Hafta 5: Tüketici davranışı",p:[
+"Tüketim kararı: fiyat, gelir ve fayda. En önemlisi faydadır.",
+"<b class='k'>Kardinal fayda</b>: ölçülebilir. Toplam fayda, marjinal fayda, azalan marjinal fayda ilkesi. MU = 0 doyum noktasıdır (TU maksimum).",
+"Denge: MU<sub>A</sub>/P<sub>A</sub> = MU<sub>B</sub>/P<sub>B</sub>.",
+"<b class='k'>Ordinal fayda</b>: farksızlık eğrisi (negatif eğimli, kesişmez, orijine dışbükey, üsttekisi daha yüksek fayda) ve bütçe doğrusu.",
+"Gelir artarsa bütçe doğrusu dışa paralel kayar. Bir malın fiyatı değişirse eğim değişir.",
+"Denge: bütçe doğrusu ile farksızlık eğrisinin teğet noktası."]},
+{t:"Hafta 6: Üretici teorisi",p:[
+"Üretim fonksiyonu Q = F(K, L). Eş ürün eğrisi aynı çıktıyı veren K-L bileşimleridir ve farksızlık eğrisi gibi davranır.",
+"Marjinal ürün: MP<sub>L</sub> = ∂F/∂L. Ortalama ürün: AP = Q/L.",
+"<b class='k'>Azalan verimler kanunu</b>: sabit girdiye değişken girdi eklendikçe MP düşer (kısa dönem).",
+"Üretimin üç aşaması: I (AP artıyor), II (AP maksimumundan MP = 0'a), III (MP negatif). MP, AP'nin maksimumundan geçer.",
+"Eş maliyet doğrusu: r·K + w·L = TC. Üretici dengesi: eş maliyet doğrusu ile eş ürün eğrisinin teğet noktası."]},
+{t:"Hafta 7: Piyasa türleri",p:[
+"<b class='k'>Tam rekabet</b>: atomisite, mobilite, homojenlik, şeffaflık. Firma fiyat alıcıdır.",
+"<b class='k'>Monopol</b>: tek satıcı, yakın ikame yok, giriş engeli. Nedenler: yasal, ölçek ekonomisi, anlaşma (kartel, tröst), hammadde kontrolü. Tedbirler: anti-tröst, regülasyon, kamulaştırma.",
+"<b class='k'>Monopollü rekabet</b>: çok firma, farklılaştırılmış ürün, serbest giriş. Uzun dönemde normal kâr. Örnek: otel, fast-food.",
+"<b class='k'>Oligopol</b>: az firma, <b class='k'>karşılıklı bağımlılık</b>, giriş engelleri. Saf (homojen) ve farklılaştırılmış oligopol; tam ve kısmi oligopol."]},
+{t:"Hafta 8: Makroiktisat ve milli gelir",p:[
+"Makro, Keynes ile 1930'larda doğdu. Keynesçi yaklaşım talep, yeni klasik yaklaşım arz odaklıdır.",
+"<b class='k'>Terkip hatası</b>: birey için doğru olanın toplum için de doğru sanılması (tasarruf paradoksu).",
+"Amaçlar: tam istihdam, fiyat istikrarı, ödemeler dengesi, büyüme, gelir adaleti.",
+"Sektörler: hanehalkı, firmalar, hükümet, dış ticaret.",
+"GSYİH sınırlar içinde üretilen nihai değerdir. GSMH vatandaşların ürettiğidir. SMH = GSMH − amortisman, NYİH = GSYİH − yıpranma.",
+"Hesaplama: üretim (ΣPQ), gelir (w+i+r+π), harcama (C+I+G+X−M).",
+"Reel gelir sabit fiyatlarla ölçülür. Milli gelir refahı tam yansıtmaz: evde üretim, boş zaman, çevre zararı, gelir dağılımı."]}
+];
+const CARDS=[
+["Fırsat maliyeti","Bir seçim için vazgeçilen en değerli alternatif."],
+["Efektif talep","Satın alma gücüyle desteklenmiş talep."],
+["Talep miktarı mı, talep mi değişti? Fiyat değişti.","Talep miktarı değişir: eğri üzerinde hareket."],
+["Tamamlayıcı malın fiyatı artarsa talebe ne olur?","Talep azalır (eğri sola kayar)."],
+["Taban fiyat","Denge fiyatın üstünde, üreticiyi korur. Arz fazlasını devlet alır."],
+["Tavan fiyat (narh)","Denge fiyatın altında, tüketiciyi korur. Talep fazlası doğar."],
+["Tüketici rantı","Ödemeye razı olunan fiyat − ödenen fiyat."],
+["Doyum noktası","MU = 0, toplam fayda maksimum."],
+["Kardinal denge koşulu","MU_A / P_A = MU_B / P_B"],
+["Ordinal denge","Bütçe doğrusu ile farksızlık eğrisinin teğet noktası."],
+["Azalan verimler kanunu","Sabit girdiye değişken girdi eklendikçe MP düşer (kısa dönem)."],
+["Üretici dengesi","Eş maliyet doğrusu ile eş ürün eğrisinin teğet noktası."],
+["Tam rekabetin dört koşulu","Atomisite, mobilite, homojenlik, şeffaflık."],
+["Oligopolün en önemli özelliği","Karşılıklı bağımlılık."],
+["Kartel ve tröst farkı","Kartel: anlaşma. Tröst: tam birleşme."],
+["Terkip hatası","Birey için doğru olanın toplum için de doğru sanılması."],
+["GSMH formülü","GSYİH + yurt dışı vatandaş geliri − yurt içi yabancı geliri"],
+["Reel milli gelir artışı ne zaman?","Üretim artışı fiyat artışından büyükse."],
+["Harcama yöntemi","Y = C + I + G + (X − M)"]
+];
+const QUIZ=[
+["İktisat, kıt kaynakların etkin kullanımını inceler.",1,"Doğru. İktisat kıtlık bilimidir."],
+["Mikroiktisat kıt kaynakların tam kullanımıyla ilgilenir.",0,"Yanlış. Mikro etkin kullanım, makro tam kullanımdır."],
+["İktisatta sermaye, para ve kıymetli kâğıt demektir.",0,"Yanlış. Sermaye üretilmiş fiziksel üretim kaynağıdır."],
+["Malın fiyatı değişince talep eğrisi kayar.",0,"Yanlış. Eğri üzerinde hareket olur, kayma fiyat dışı etkenlerden gelir."],
+["İkame malın fiyatı artarsa talep artar.",1,"Doğru."],
+["Girdi fiyatları artarsa arz eğrisi sola kayar.",1,"Doğru. Maliyet artar, arz azalır."],
+["Denge fiyatın üstünde arz fazlası oluşur.",1,"Doğru. Fiyat düşerek dengeye gelir."],
+["Taban fiyat denge fiyatın altında belirlenir.",0,"Yanlış. Taban fiyat üstte, tavan fiyat altta belirlenir."],
+["Talep sabitken arz artarsa denge fiyat düşer, miktar artar.",1,"Doğru."],
+["Marjinal fayda sıfırken toplam fayda maksimumdur.",1,"Doğru. Bu doyum noktasıdır."],
+["Farksızlık eğrileri birbirini keser.",0,"Yanlış. Kesişmezler."],
+["MP eğrisi AP'nin maksimum noktasından geçer.",1,"Doğru."],
+["Tam rekabette firma fiyat belirleyicidir.",0,"Yanlış. Firma fiyat alıcıdır."],
+["Oligopolün en önemli özelliği karşılıklı bağımlılıktır.",1,"Doğru."],
+["GSMH, GSYİH'dan yurt dışı faktör gelirleri farkı kadar ayrılır.",1,"Doğru."]
+];
+const $=s=>document.querySelector(s);
+// Tabs
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',x===b));
+  ['ozet','formul','kart','test'].forEach(id=>$('#'+id).hidden=id!==b.dataset.tab);
+});
+// Theme
+$('#theme').onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark'};
+// Weeks
+const wk=$('#weeks');
+WEEKS.forEach((w,i)=>{const b=document.createElement('button');b.textContent='Hafta '+(i+1);b.onclick=()=>showWeek(i);wk.appendChild(b)});
+function showWeek(i){
+  [...wk.children].forEach((b,j)=>b.setAttribute('aria-pressed',i===j));
+  $('#week').innerHTML='<h2>'+WEEKS[i].t+'</h2><ul>'+WEEKS[i].p.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+}
+showWeek(0);
+// Flashcards
+let deck=CARDS.slice(),ci=0,flip=false;
+function drawCard(){
+  const c=$('#card');const [q,a]=deck[ci];
+  c.className='card'+(flip?' back':'');
+  c.innerHTML='<div class="lbl">'+(flip?'Cevap':'Soru')+'</div><div class="txt"></div>';
+  c.querySelector('.txt').textContent=flip?a:q;
+  $('#cnt').textContent=(ci+1)+' / '+deck.length;
+}
+$('#card').onclick=()=>{flip=!flip;drawCard()};
+$('#next').onclick=()=>{ci=(ci+1)%deck.length;flip=false;drawCard()};
+$('#prev').onclick=()=>{ci=(ci-1+deck.length)%deck.length;flip=false;drawCard()};
+$('#shuf').onclick=()=>{for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}ci=0;flip=false;drawCard()};
+drawCard();
+// Quiz
+let qi=0,score=0;
+function drawQ(){
+  const z=$('#quiz');
+  if(qi>=QUIZ.length){z.innerHTML='<div class="q"><p class="sum">Sonuç: '+score+' / '+QUIZ.length+'</p><button class="btn" id="again">Yeniden başla</button></div>';$('#again').onclick=()=>{qi=0;score=0;drawQ()};return}
+  z.innerHTML='<div class="q"><div class="muted">Soru '+(qi+1)+' / '+QUIZ.length+'</div><p></p><div class="ans"><button class="btn" data-a="1">Doğru</button><button class="btn ghost" data-a="0">Yanlış</button></div><div class="fb" aria-live="polite"></div></div>';
+  z.querySelector('p').textContent=QUIZ[qi][0];
+  z.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+    const ok=+b.dataset.a===QUIZ[qi][1];if(ok)score++;
+    z.querySelectorAll('[data-a]').forEach(x=>x.disabled=true);
+    const fb=z.querySelector('.fb');fb.className='fb '+(ok?'ok':'no');
+    fb.innerHTML='<strong>'+(ok?'Doğru cevap.':'Yanlış cevap.')+'</strong> <span></span><div class="row"><span></span><button class="btn" id="nq">'+(qi===QUIZ.length-1?'Sonucu gör':'Sonraki soru')+'</button></div>';
+    fb.querySelector('span').textContent=QUIZ[qi][2];
+    $('#nq').onclick=()=>{qi++;drawQ()};$('#nq').focus();
+  });
+}
+drawQ();
+</script>
+</body>
+</html>
